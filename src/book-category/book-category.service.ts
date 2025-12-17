@@ -24,22 +24,22 @@ export class BookCategoryService {
     }
   }
   create(createBookCategoryDto: CreateBookCategoryDto) {
-    return 'This action adds a new bookCategory';
+    return this.repo.save(createBookCategoryDto);
   }
 
   findAll() {
-    return `This action returns all bookCategory`;
+    return this.repo.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} bookCategory`;
+  findOne(id: string) {
+    return this.repo.findOneBy({ id });
   }
 
-  update(id: number, updateBookCategoryDto: UpdateBookCategoryDto) {
-    return `This action updates a #${id} bookCategory`;
+  update(id: string, updateBookCategoryDto: UpdateBookCategoryDto) {
+    return this.repo.update(id, updateBookCategoryDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} bookCategory`;
+  remove(id: string) {
+    return this.repo.delete(id);
   }
 }
