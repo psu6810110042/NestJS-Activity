@@ -10,7 +10,7 @@ export class BookService {
   constructor(
     @InjectRepository(Book)
     private readonly repo: Repository<Book>,
-  ) {}
+  ) { }
 
   create(createBookDto: CreateBookDto) {
     return this.repo.save(createBookDto);
@@ -21,7 +21,10 @@ export class BookService {
   }
 
   async findOne(id: string): Promise<Book> {
-    const book = await this.repo.findOneBy({ id });
+    const book = await this.repo.findOne({
+      where: { id },
+      relations: ['category'],
+    });
     if (!book) {
       throw new NotFoundException(`Book with ID ${id} not found`);
     }
