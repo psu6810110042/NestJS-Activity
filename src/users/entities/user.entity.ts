@@ -1,27 +1,31 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToMany} from 'typeorm';
+import { Book } from 'src/book/entities/book.entity';
 
 export enum UserRole {
-  ADMIN = 'ADMIN',
-  USER = 'USER',
+    ADMIN = 'ADMIN',
+    USER = 'USER',
 }
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
 
-  @Column({ unique: true })
-  email: string;
+    @Column({ unique: true })
+    email: string;
 
-  @Column()
-  password: string; // เราจะเก็บแบบ Hashed
+    @Column()
+    password: string; // เราจะเก็บแบบ Hashed
 
-  @Column({ type: 'enum', enum: UserRole, default: UserRole.USER })
-  role: UserRole;
+    @Column({ type: 'enum', enum: UserRole, default: UserRole.USER })
+    role: UserRole;
 
-  @CreateDateColumn()
-  createdAt: Date;
+    @CreateDateColumn()
+    createdAt: Date;
 
-  @UpdateDateColumn()
-  updatedAt: Date;
+    @UpdateDateColumn()
+    updatedAt: Date;
+
+    @ManyToMany(() => Book, (book) => book.likedBy)
+    likedBooks: Book[];
 }

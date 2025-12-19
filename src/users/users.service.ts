@@ -24,6 +24,16 @@ export class UsersService {
         role: UserRole.ADMIN
       } as any);
     }
+
+    const user = await this.findOneByEmail('khet@bookstore.com');
+    if (!user) {
+      console.log('Seeding USER User...');
+      await this.create({
+        email: 'khet@bookstore.com',
+        password: 'khetgamerthailand',
+        role: UserRole.USER
+      } as any);
+    }
   }
 
   async create(createUserDto: CreateUserDto) {
