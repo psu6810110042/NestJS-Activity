@@ -6,6 +6,7 @@ import { BookModule } from './book/book.module';
 import { Book } from './book/entities/book.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -15,10 +16,10 @@ import { UsersModule } from './users/users.module';
     }),
 
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],      // บอกว่า Module นี้ต้องใช้ ConfigModule
+      imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         type: 'postgres',
-        host: configService.get<string>('DB_HOST'), // ใช้ ConfigService ดึงค่า แทน process.env
+        host: configService.get<string>('DB_HOST'),
         port: configService.get<number>('DB_PORT'),
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
@@ -26,22 +27,13 @@ import { UsersModule } from './users/users.module';
         autoLoadEntities: true,
         synchronize: true,
       }),
-      inject: [ConfigService],      // Inject ConfigService เข้ามาใน Factory
+      inject: [ConfigService],
     }),
 
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'admin',
-      password: 'password123',
-      database: 'bookstore_dev',
-      entities: [Book, BookCategory],
-      synchronize: true, // สร้าง Table อัตโนมัติ (ใช้สำหรับ Dev เท่านั้น)
-    }),
     BookCategoryModule,
     BookModule,
     UsersModule,
+    AuthModule,
   ],
 })
 export class AppModule { }
